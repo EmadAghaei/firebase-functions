@@ -63,3 +63,24 @@ exports.updateVar = functions.https.onRequest((req, res) => {
         console.log("The read failed: " + errorObject.code);
     });
 });
+
+exports.deleteVar = functions.https.onRequest((req, res) => {
+    // Grab the text parameter.
+    var varKey = req.query.varKey;
+
+    var googleId = req.query.googleId;
+    var dataStoreId = req.query.dataStoreId;
+// Push the new message into the Realtime Database using the Firebase Admin SDK.
+    var ref = admin.database().ref('/variables/' + googleId.toString()+'/'+ dataStoreId.toString());
+
+    ref.orderByChild('varKey').equalTo(varKey).on("value", function (snapshot) {
+        console.log(snapshot.val());
+
+        snapshot.forEach(function(child) {
+            child.ref.remove();
+        });
+        res.status(200).send("Deleted Succesully");
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+});
