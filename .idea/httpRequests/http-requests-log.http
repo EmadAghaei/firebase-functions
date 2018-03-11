@@ -1,0 +1,8 @@
+GET https://us-central1-fir-functions-clients.cloudfunctions.net/getAllVariables?googleId=tlatoza
+Accept: */*
+Cache-Control: no-cache
+
+<> 2018-03-09T050947.200.json
+
+###
+
