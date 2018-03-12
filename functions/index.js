@@ -22,7 +22,8 @@ exports.addVar = functions.https.onRequest((req, res) => {
 
 exports.getAlldataOfDataStore = functions.https.onRequest((req, res) => {
     var googleId = req.query.googleId;
-    var ref = admin.database().ref('/variables/' + googleId +'/'+req.query.dataStoreId.toString());
+    var dataStoreId = req.query.dataStoreId;
+    var ref = admin.database().ref('/variables/' + googleId +'/'+dataStoreId);
 
    ref.on("value", function (snapshot) {
         console.log(snapshot.val());
