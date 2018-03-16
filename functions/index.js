@@ -7,16 +7,23 @@ admin.initializeApp(functions.config().firebase);
 
 
 exports.addVar = functions.https.onRequest((req, res) => {
-    // Grab the text parameter.
-    var varKey = req.query.varKey;
-    var varValue = req.query.varValue;
+
     var googleId = req.query.googleId;
     var dataStoreId = req.query.dataStoreId;
 // Push the new message into the Realtime Database using the Firebase Admin SDK.
     var ref = admin.database().ref('/variables/' + googleId +'/'+dataStoreId);
-    // ref.push({varKey: varKey, varValue: varValue});
-    ref.push({varKey : varKey, varValue: varValue});
-    return res.send('Saved data store');
+
+    var obj = {};
+    for (var varKey in req.query) {
+        if (req.query.hasOwnProperty(varKey)) {
+            var objValue = req.query[varKey].toString();
+            obj[varKey] = objValue;
+                  }
+    }
+    ref.push(obj);
+    console.log("Saved map: "+ varKey+" "+ req.query[varKey])
+
+    return res.send('Saved data stored successfuly');
 });
 
 
