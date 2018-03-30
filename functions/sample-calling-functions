@@ -1,0 +1,43 @@
+var url = new URL("https://us-central1-fir-functions-clients.cloudfunctions.net/addObject"),
+    params = {title: 'coding',
+        description: 'work on the crowd code project',
+        dueDate: '03/14/2020',
+        dataStoreId: 'todo3',
+        googleId: 'emadaghayi', taskId: '2'}
+Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+fetch(url).then(function(response) {
+    return response.json();
+});
+
+
+var rowTaskObj = {"title": "coding", "description": "work on the crowd code project", "dueDate": "03/14/2018", "dataStoreId": "todo3","googleId": "emadaghayi","taskId": "1"};
+var url = new URL("https://us-central1-fir-functions-clients.cloudfunctions.net/addObject")
+
+Object.keys(rowTaskObj).forEach(key => url.searchParams.append(key, rowTaskObj[key]))
+fetch(url).then(function(response) {
+    return response.json();
+});
+
+// Update function
+
+var url = new URL("https://us-central1-fir-functions-clients.cloudfunctions.net/updateObject"),
+    params = {title: 'coding', description: 'work on the crowd code project',  dueDate: '22/22/5555',
+        dataStoreId: 'todo3',  googleId: 'emadaghayi', taskId: '2'}
+Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+fetch(url).then(function(response) {
+    return response.json();
+});
+
+//
+
+
+var url = new URL("https://us-central1-fir-functions-clients.cloudfunctions.net/deleteObject"),
+    params = {dataStoreId: 'todo3',  googleId: 'emadaghayi', taskId: '2'}
+Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+fetch(url).then(function(response) {
+    return response.json();
+});
+
+
+
+

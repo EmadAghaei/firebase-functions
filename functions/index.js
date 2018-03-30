@@ -29,7 +29,6 @@ exports.addObject = functions.https.onRequest((req, res) => {
 exports.updateObject = functions.https.onRequest((req, res) => {
     var googleId = req.query.googleId;
     var dataStoreId = req.query.dataStoreId;
-// Push the new message into the Realtime Database using the Firebase Admin SDK.
     var ref = admin.database().ref('/variables/' + googleId +'/'+dataStoreId);
 
     var obj = {};
@@ -53,6 +52,26 @@ exports.updateObject = functions.https.onRequest((req, res) => {
         console.log("The read failed: " + errorObject.code);
     });
 });
+
+exports.deleteObject = functions.https.onRequest((req, res) => {
+    var googleId = req.query.googleId;
+    var dataStoreId = req.query.dataStoreId;
+    var ref = admin.database().ref('/variables/' + googleId +'/'+dataStoreId);
+
+    var taskId = req.query.taskId;
+    ref.orderByChild('taskId').equalTo(taskId).once("value", function (snapshot) {
+        console.log(snapshot.val());
+
+        snapshot.forEach(function(child) {
+            child.ref.remove();
+        });
+        res.status(200).send("Deleted Shamefully");
+        res.end();
+    }, function (errorObject) {
+        console.log("The delete failed: " + errorObject.code);
+    });
+});
+
 
 exports.getAlldataOfDataStore = functions.https.onRequest((req, res) => {
     var googleId = req.query.googleId;
@@ -80,23 +99,3 @@ exports.getAlldataOfUser = functions.https.onRequest((req, res) => {
 
 
 
-exports.deleteVar = functions.https.onRequest((req, res) => {
-    // Grab the text parameter.
-    var varKey = req.query.varKey;
-
-    var googleId = req.query.googleId;
-    var dataStoreId = req.query.dataStoreId;
-// Push the new message into the Realtime Database using the Firebase Admin SDK.
-    var ref = admin.database().ref('/variables/' + googleId.toString()+'/'+ dataStoreId.toString());
-
-    ref.orderByChild('varKey').equalTo(varKey).on("value", function (snapshot) {
-        console.log(snapshot.val());
-
-        snapshot.forEach(function(child) {
-            child.ref.remove();
-        });
-        res.status(200).send("Deleted Succesully");
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-    });
-});
